@@ -1,0 +1,18 @@
+{
+  "name": "wsdog",
+  "version": "1.0.0",
+  "description": "An encrypted proxy service program through websocket",
+  "repository": "git@github.com:metowolf/wsdog.git",
+  "author": "metowolf <i@i-meto.com>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "ip": "^1.1.5",
+    "ws": "^6.1.4"
+  },
+  "scripts": {
+    "local": "node local",
+    "client": "node local",
+    "server": "node server"
+  }
+}
