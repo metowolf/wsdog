@@ -1,6 +1,7 @@
 const http = require('http')
 const config = require('./utils/config')
 const connection = require('./libs/server')
+const version = require('./package.json').version
 const WebSocket = require('ws').Server
 
 let server = http.createServer((req, res) => {
@@ -17,6 +18,7 @@ server.listen(config.server_port, config.server_host)
 
 server.on('listening', () => {
   let info = server.address()
+  console.log(`[server] version ${version}`)
   console.log(`[server] listening at ${info.address}:${info.port}`)
 })
 
