@@ -52,22 +52,22 @@ const stage_connect = (info, data) => {
   let addr, port
   if (atype === ATYP_IPV4) {
     addr = data.slice(4, 8).join('.')
-    port = data.readUInt16BE(8)
+    port = data.slice(8, 10)
   }
   if (atype === ATYP_DOMAIN) {
     let len = data[4]
     addr = data.slice(5, 5 + len).toString()
-    port = data.readUInt16BE(5 + len)
+    port = data.slice(5 + len, 5 + len + 2)
   }
   if (atype === ATYP_IPV6) {
     addr = ip.toString(data.slice(4, 20))
-    port = data.readUInt16BE(20)
+    port = data.slice(20, 22)
   }
 
   info.stage = STAGE_CACHE
 
-  let buf = Buffer.from([SOCKS_VERSION, REPLY_SUCCEEDED, RESERVED, ATYP_IPV4, RESERVED, RESERVED, RESERVED, RESERVED, RESERVED, RESERVED])
-  buf.writeUInt16BE(port, 8)
+  let buf = Buffer.from([SOCKS_VERSION, REPLY_SUCCEEDED, RESERVED, ATYP_IPV4, RESERVED, RESERVED, RESERVED, RESERVED])
+  buf = Buffer.concat([buf, port])
   info.socket.write(buf)
 
   info.ws = new WebSocket(config.url)
@@ -78,8 +78,7 @@ const stage_connect = (info, data) => {
 
     info.nonce = crypto.nonce()
 
-    let buf = JSON.stringify({addr,port})
-    buf = Buffer.from(buf)
+    let buf = Buffer.concat([Buffer.from(addr), port])
     buf = crypto.encrypt(buf, info.nonce)
     buf = Buffer.concat([buf, info.nonce])
     info.ws.send(buf)
@@ -120,7 +119,9 @@ const stage_cache = (info, data) => {
 
 const stage_pipe = (info, data) => {
   let buf = crypto.encrypt(data, info.nonce)
-  info.ws.send(buf)
+  if (info.ws.readyState === WebSocket.OPEN) {
+    info.ws.send(buf)
+  }
 }
 
 module.exports = socket => {

@@ -17,10 +17,10 @@ const stage_connect = (info, data) => {
 
   info.stage = STAGE_CACHE
 
-  let remote_info = data.toString()
-  remote_info = JSON.parse(remote_info)
+  let remote_addr = data.slice(0, -2).toString()
+  let remote_port = data.slice(-2).readUInt16BE(0)
 
-  info.remote = net.connect(remote_info.port, remote_info.addr, () => {
+  info.remote = net.connect(remote_port, remote_addr, () => {
     console.log('[net] connected')
 
     while (info.cache.length) {
@@ -33,7 +33,9 @@ const stage_connect = (info, data) => {
 
   info.remote.on('data', data => {
     let buf = crypto.encrypt(data, info.nonce)
-    info.ws.send(buf)
+    if (info.ws.readyState === WebSocket.OPEN) {
+      info.ws.send(buf)
+    }
   })
 
   info.remote.on('end', () => {
