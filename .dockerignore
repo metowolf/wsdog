@@ -1,0 +1,13 @@
+node_modules
+.git
+.gitignore
+.env
+.env.*
+*.md
+wrangler.toml
+.wrangler
+dist
+.DS_Store
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
