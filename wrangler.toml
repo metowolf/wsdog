@@ -1,0 +1,13 @@
+name = "wsdog"
+main = "src/worker.js"
+compatibility_date = "2024-10-01"
+
+# 环境变量配置
+[vars]
+KEY = "wsdog"
+METHOD = "aes-256-gcm"
+
+# 生产环境配置
+[env.production]
+name = "wsdog-production"
+vars = { KEY = "your-production-key", METHOD = "aes-256-gcm" }

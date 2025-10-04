@@ -1,18 +1,22 @@
 {
   "name": "wsdog",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "type": "module",
   "description": "An encrypted proxy service program through websocket",
   "repository": "git@github.com:metowolf/wsdog.git",
   "author": "metowolf <i@i-meto.com>",
   "license": "MIT",
-  "dependencies": {
-    "dotenv": "^6.2.0",
-    "ip": "^1.1.5",
-    "ws": "^6.1.4"
-  },
   "scripts": {
-    "local": "node local",
-    "client": "node local",
-    "server": "node server"
+    "dev": "wrangler dev src/worker.js",
+    "deploy": "wrangler deploy src/worker.js",
+    "client": "node src/client.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "hono": "^4.6.14",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.42.0"
   }
 }
