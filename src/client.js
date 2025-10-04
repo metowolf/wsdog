@@ -5,7 +5,7 @@
 import net from 'net'
 import WebSocket from 'ws'
 import { config } from './utils/config.js'
-import { Crypto } from './utils/crypto-node.js'
+import { Crypto } from './utils/crypto.js'
 
 const STAGE_INIT = 0x00
 const STAGE_CONNECT = 0x01
