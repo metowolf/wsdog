@@ -1,5 +1,7 @@
 node_modules
+pnpm-lock.yaml
 .env
 .wrangler
 dist
+.dev
 *.log
