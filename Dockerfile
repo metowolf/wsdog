@@ -3,12 +3,13 @@ FROM node:20-alpine
 WORKDIR /app
 
 # 复制依赖配置
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json ./
+COPY pnpm-lock.yaml* ./
 
 # 安装 pnpm 和依赖
 RUN corepack enable && \
     corepack prepare pnpm@latest --activate && \
-    pnpm install --frozen-lockfile --prod
+    pnpm install --prod
 
 # 复制源代码
 COPY src ./src
